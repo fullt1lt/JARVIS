@@ -17,6 +17,7 @@ class VoiceRecognizer:
         self.__channels = 1
         self.__dtype = "int16"
         self.__running = True
+        self.ignore_input = False 
 
     def _audio_callback(self, indata, frames, time, status):
         """Внутренний коллбек, пишет данные в очередь."""
@@ -33,10 +34,12 @@ class VoiceRecognizer:
             print("🎙️ Начал слушать...")
             while True:
                 data = self.queue_audio.get()
+                if self.ignore_input:
+                    continue
                 if self.recognizer.AcceptWaveform(data):
                     result = self.recognizer.Result()
                     text = eval(result)["text"]
-                    self.__stop_listening(text)
+                    self.__handle_control_commands(text)
                     if self.__running and text:
                         print(f"Распознано: {text}")
                         self.queue_text.put(text)
@@ -47,9 +50,7 @@ class VoiceRecognizer:
         thread.daemon = True
         thread.start()
 
-
-
-    def __stop_listening(self, command):
+    def __handle_control_commands(self, command):
         """Остановить прослушку (например, перед когда не нужно выполнять команды)."""
         if command == "стоп":
             self.__running = False
