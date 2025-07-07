@@ -11,6 +11,6 @@ NAME_VOICE_ASSISTANT = "джарвис"  # Имя голосового асси�
 
 # Пути к программам на компьютере
 PROGRAMS = {
-    "start_chrome": r"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
-    "start_vscode": r"C:\\Users\\Даниил\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
+    "chrome": r"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "vscode": r"C:\\Users\\Даниил\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
 }

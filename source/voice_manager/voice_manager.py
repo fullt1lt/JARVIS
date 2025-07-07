@@ -17,7 +17,9 @@ class VoiceRecognizer:
         self.__channels = 1
         self.__dtype = "int16"
         self.__running = True
-        self.ignore_input = False 
+        self.ignore_input = False
+        self.thread = None
+        
 
     def _audio_callback(self, indata, frames, time, status):
         """Внутренний коллбек, пишет данные в очередь."""
@@ -49,6 +51,7 @@ class VoiceRecognizer:
         thread = threading.Thread(target=self.listen_command)
         thread.daemon = True
         thread.start()
+
 
     def __handle_control_commands(self, command):
         """Остановить прослушку (например, перед когда не нужно выполнять команды)."""

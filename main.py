@@ -5,15 +5,18 @@ import time
 
 from source.speaker_manager.speaker_manager import SileroSpeaker
 from source.utils.utils import hello_message
+from source.utils.app_manager import AppManager
 
 
 vr = VoiceRecognizer()
-cm = Comand_Processsing()
+cm = Comand_Processsing(AppManager())
 speaker = SileroSpeaker(speaker="aidar")
+app_running = True 
+
 
 def speaker_thread():
     speaker.speak(hello_message())
-    while True:
+    while app_running:
         if not vr.queue_text.empty():
             command = vr.queue_text.get()
             print(f"🗣 Вы сказали: {command}")
@@ -28,6 +31,8 @@ def speaker_thread():
 
 
 def main():
+    global app_running
+
     vr.start_listening()
     speak_thread = threading.Thread(target=speaker_thread, daemon=True)
     speak_thread.start()
@@ -37,7 +42,10 @@ def main():
             time.sleep(1)
     except KeyboardInterrupt:
         print("⛔ Завершаем")
-        vr.stop_listening()
+        app_running = False  # сигнал на выход speaker-потоку
+        vr.terminate()  # полная остановка прослушки
+        speak_thread.join(timeout=2)
+        print("✅ Всё остановлено корректно.")
 
 
 if __name__ == "__main__":
