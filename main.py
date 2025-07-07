@@ -1,14 +1,18 @@
 from source.voice_manager.voice_manager import VoiceRecognizer
-from source.speaker_manager.speaker_manager import speak
 from source.сommand_processing.command_processing import Comand_Processsing
 import threading
 import time
 
+from source.speaker_manager.speaker_manager import SileroSpeaker
+from source.utils.utils import hello_message
+
+
 vr = VoiceRecognizer()
 cm = Comand_Processsing()
-
+speaker = SileroSpeaker(speaker="aidar")
 
 def speaker_thread():
+    speaker.speak(hello_message())
     while True:
         if not vr.queue_text.empty():
             command = vr.queue_text.get()
@@ -17,7 +21,7 @@ def speaker_thread():
 
             response = cm.get_command(command)
             if response:
-                speak(response)
+                speaker.speak(response)
 
             vr.ignore_input = False
         time.sleep(0.1)
