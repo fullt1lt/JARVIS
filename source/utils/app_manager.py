@@ -15,7 +15,7 @@ class AppManager:
 
         path = self.program_paths[program_name]
         try:
-            process = subprocess.Popen(path)
+            process = subprocess.Popen([path, "--new-window"])
             if program_name not in self.processes:
                 self.processes[program_name] = []
             self.processes[program_name].append(process)

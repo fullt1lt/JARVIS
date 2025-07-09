@@ -1,12 +1,12 @@
 import random
-import subprocess
 
-from ..settings import  PROGRAMS, NAME_VOICE_ASSISTANT
+from ..settings import  NAME_VOICE_ASSISTANT
 from ..utils.utils import load_to_json, convert_time_to_words
+from ..utils.app_manager import AppManager
 
 
 class Comand_Processsing:
-    def __init__(self, app_manager: "AppManager"):
+    def __init__(self, app_manager: AppManager):
         self.commands = load_to_json()
         self.__name_command = NAME_VOICE_ASSISTANT
         self.app_manager = app_manager
